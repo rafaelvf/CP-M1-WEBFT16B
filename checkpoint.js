@@ -319,11 +319,27 @@ BinarySearchTree.prototype.height = function(){
 
 var binarySearch = function (array, target) {
   // Tu código aca:
- 
+  let min = 0;
+  let max = array.length - 1;
+  let mid = Math.floor((max - min)/2 );
 
- 
+  while((max - min) > 1) {
+    if(target === array[mid]) {
+      return mid;
+     
+    } if (target < array[mid]) {
+        max = mid;
+        mid = Math.floor((max - min)/2 )
+    } else { 
+      min = mid; 
+      mid = Math.floor(mid + (max - mid)/2);
+    }
+  }if (target === array[min]) {
+    return min;
+  }  if (target === array[max]) {
+    return max;
+  } else {return -1;} 
 }
-
 // EJERCICIO 9
 // Ordená un arreglo de objetos usando un bubble sort pero con algunas particularidades.
 // Además del arreglo a ordenar (array) la función va a recibir como parámetro una función
