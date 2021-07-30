@@ -256,6 +256,8 @@ return nuevalista;
 
 var cardGame = function(playerOneCards, playerTwoCards){
   // Tu código aca:
+var castillo1=100;
+var castillo2=100;
 
 }
 
