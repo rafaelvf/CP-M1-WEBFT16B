@@ -39,7 +39,18 @@ const {
 
 var isAncestor = function(genealogyTree, ancestor, descendant){
   // Tu código aca:
-
+  if(genealogyTree[ancestor].length<=0){   //si no tiene desendientes entonces es falso
+    return false;
+  }
+  for(var i=0;i<genealogyTree[ancestor].length;i++){
+    if(genealogyTree[ancestor][i]===descendant){
+      return true;
+    }
+      if(genealogyTree[genealogyTree[ancestor][i]].length>0){
+        return isAncestor(genealogyTree,genealogyTree[ancestor][i],descendant);
+      }
+    }
+  return false;
 }
 
 
@@ -77,7 +88,16 @@ var isAncestor = function(genealogyTree, ancestor, descendant){
 
 function secuenciaHenry(obj, n) {
   // Tu código aca:
-
+if(n<0){
+  return null;
+}
+if(n===0){
+  return obj.first;
+}
+if(n===1){
+  return Object.keys(obj).length;
+}
+return secuenciaHenry(obj,n-1)*secuenciaHenry(obj,n-2)-secuenciaHenry(obj,n-2);
 }
 
 // ---------------------
@@ -98,7 +118,19 @@ function secuenciaHenry(obj, n) {
 
 LinkedList.prototype.size = function(){
   // Tu código aca:
-
+var acc=0;
+if(this.head===null){
+  return 0;
+}
+else{
+  var current=this.head;
+  acc= acc + 1;
+  while(current.next){
+    acc++
+    current=current.next;
+  }
+}
+return acc;
 }
 
 
@@ -119,6 +151,35 @@ LinkedList.prototype.size = function(){
 
 LinkedList.prototype.switchPos = function(pos1, pos2){
   // Tu código aca:
+var current1=this.head; //tengo que crear dos currents por que son dos poisiciones que recorrer.
+var current2=this.head;
+
+if(pos1<0 || pos2<0){ //si cualquiera de las posi son negativas 
+  return false;
+}
+if(pos1>this.size() || pos2>this.size()){ //si cualquiera de las posi son mayores a el size de las listas
+  return false;
+}
+if(this.head===null){ //si es vacio el head
+  return false;
+}else{
+  var i=0;
+  while(i < pos1){//mientras i no llegue a la posicion, tiene que seguir iterando y el current moviendose
+    current1=current1.next;
+    ++i;
+  }
+  var momentanea1=current1.value;
+  var j=0;
+  while(j < pos2){
+    current2=current2.next;
+    ++j;
+  }
+  var momentanea2=current2.value;
+
+    current1.value=momentanea2;//aqui hacemos el switcheo
+    current2.value=momentanea1;
+    return true;
+}
 
 }
 
@@ -135,7 +196,19 @@ LinkedList.prototype.switchPos = function(pos1, pos2){
 // Continuando con el nodo 2 de la lista 2, conectandose con el nodo 2 de la lista 2.
 var mergeLinkedLists = function(linkedListOne, linkedListTwo){
   // Tu código aca:
+var nuevalista = new LinkedList();//se crea nueva lista
 
+var posact1=linkedListOne.head;//necesito las dos cabezas
+var posact2=linkedListTwo.head;
+
+while(posact1 != null && posact2 != null){
+  nuevalista.add(posact1.value)//si se cumple lo del while, se van añadiendo
+  nuevalista.add(posact2.value)
+
+  posact1=posact1.next;//se va avanzando al sguiente current
+  posact2=posact2.next;
+}
+return nuevalista;
 }
 
 
@@ -207,6 +280,23 @@ var cardGame = function(playerOneCards, playerTwoCards){
 
 BinarySearchTree.prototype.height = function(){
   // Tu código aca:
+  if(this.value === null){
+    return 0;
+  }
+
+  if(this.left === null && this.right === null){
+    return 1;
+  }
+
+  if(this.left === null){
+    return 1 + this.right.height();
+  }
+
+  if(this.right === null){
+    return 1 + this.left.height();
+  }
+
+  return 1 + Math.max(this.left.height(), this.right.height());
 
 }
 
@@ -229,7 +319,9 @@ BinarySearchTree.prototype.height = function(){
 
 var binarySearch = function (array, target) {
   // Tu código aca:
+ 
 
+ 
 }
 
 // EJERCICIO 9
@@ -257,7 +349,20 @@ var binarySearch = function (array, target) {
 
 var specialSort = function(array, orderFunction) {
   // Tu código aca:
+  var swap=true;
 
+  while(swap){
+    swap=false;
+    for(var i=0;i<array.length-1;i++){
+      if(orderFunction(array[i],array[i+1])===-1){//clave esta linea. callback.
+        let auxiliar=array[i];
+        array[i]=array[i+1];
+        array[i+1]=auxiliar;
+        swap=true;
+      }
+    }
+  }
+return array;
 }
 
 // ----- Closures -----
@@ -290,6 +395,23 @@ var specialSort = function(array, orderFunction) {
 
 function closureDetect(symptoms, min) {
   // Tu código aca:
+  return function (paciente){
+    var coinciden=0;
+    for(var i=0;i<paciente.symptoms.length;i++){
+      for(var j=0; j<symptoms.length;j++){
+        if(paciente.symptoms[i]===symptoms[j]){
+          coinciden++;
+        }
+      }
+    }
+    if(coinciden>=min){
+      return true;
+    }else{
+      return false;
+    }
+
+
+  };
 
 }
 
